@@ -76,8 +76,86 @@ function TableView({ jobs, onJobClick }) {
 
   return (
     <main className="flex-1 bg-white dark:bg-background-dark overflow-auto">
-      <div className="w-full max-w-[1800px] mx-auto p-8">
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm">
+      <div className="w-full max-w-[1800px] mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Mobile Card View */}
+        <div className="lg:hidden space-y-4">
+          {sortedJobs.length === 0 ? (
+            <div className="text-center py-12 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg">
+              <span className="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 mb-3 block">
+                search_off
+              </span>
+              <h3 className="text-lg font-bold text-slate-400 dark:text-slate-500 mb-2">No Jobs Found</h3>
+              <p className="text-sm text-slate-400 dark:text-slate-500">Try adjusting your filters</p>
+            </div>
+          ) : (
+            sortedJobs.map((job) => (
+              <div
+                key={job.id}
+                onClick={() => onJobClick(job)}
+                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm active:shadow-md transition-all"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div
+                    className="size-12 rounded-full bg-cover bg-center flex-shrink-0 border-2 border-slate-100"
+                    style={{ backgroundImage: `url('${job.avatar}')` }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">{job.title}</h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{job.customer}</p>
+                  </div>
+                  <span className={`px-2.5 py-1 text-[10px] font-semibold rounded-full ${getStatusClasses(job.status)}`}>
+                    {job.status === 'inprogress' ? 'In Progress' : job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                  </span>
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                    <span className="material-symbols-outlined text-[16px]">event</span>
+                    <span>{new Date(job.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    {job.time && (
+                      <>
+                        <span className="material-symbols-outlined text-[16px] ml-2">schedule</span>
+                        <span>{job.time}</span>
+                      </>
+                    )}
+                  </div>
+
+                  {job.phone && (
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                      <span className="material-symbols-outlined text-[16px]">call</span>
+                      <span>{job.phone}</span>
+                    </div>
+                  )}
+
+                  {job.address && (
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                      <span className="material-symbols-outlined text-[16px]">location_on</span>
+                      <span className="truncate">{job.address}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 capitalize">
+                      {job.jobType}
+                    </span>
+                    {job.teamLeader && (
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="size-5 rounded-full bg-cover bg-center border border-white"
+                          style={{ backgroundImage: `url('${job.teamLeader.avatar}')` }}
+                        />
+                        <span className="text-[10px] text-slate-600 dark:text-slate-400">{job.teamLeader.name}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden lg:block bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
@@ -277,26 +355,26 @@ function TableView({ jobs, onJobClick }) {
 
         {/* Summary Stats */}
         {sortedJobs.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-4">
-            <div className="flex-1 min-w-[200px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-              <div className="text-sm text-slate-500 mb-1">Total Jobs</div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white">{sortedJobs.length}</div>
+          <div className="mt-4 sm:mt-6 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-xl p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-slate-500 mb-1">Total Jobs</div>
+              <div className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{sortedJobs.length}</div>
             </div>
-            <div className="flex-1 min-w-[200px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-              <div className="text-sm text-slate-500 mb-1">Scheduled</div>
-              <div className="text-2xl font-bold text-status-scheduled-text">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-xl p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-slate-500 mb-1">Scheduled</div>
+              <div className="text-xl sm:text-2xl font-bold text-status-scheduled-text">
                 {sortedJobs.filter(j => j.status === 'scheduled').length}
               </div>
             </div>
-            <div className="flex-1 min-w-[200px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-              <div className="text-sm text-slate-500 mb-1">In Progress</div>
-              <div className="text-2xl font-bold text-status-inprogress-text">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-xl p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-slate-500 mb-1">In Progress</div>
+              <div className="text-xl sm:text-2xl font-bold text-status-inprogress-text">
                 {sortedJobs.filter(j => j.status === 'inprogress').length}
               </div>
             </div>
-            <div className="flex-1 min-w-[200px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
-              <div className="text-sm text-slate-500 mb-1">Completed</div>
-              <div className="text-2xl font-bold text-status-completed-text">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-xl p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-slate-500 mb-1">Completed</div>
+              <div className="text-xl sm:text-2xl font-bold text-status-completed-text">
                 {sortedJobs.filter(j => j.status === 'completed').length}
               </div>
             </div>

@@ -52,16 +52,16 @@ function Controls({ currentDate, viewMode, onViewModeChange, onDateChange, onTod
   const activeFilterCount = filters.teamLeaders.length + filters.jobTypes.length;
 
   return (
-    <div className="flex items-center justify-between px-8 py-6 bg-white dark:bg-background-dark border-b border-slate-100 dark:border-slate-800">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 lg:px-8 py-4 lg:py-6 bg-white dark:bg-background-dark border-b border-slate-100 dark:border-slate-800 gap-4">
+      <div className="flex items-center gap-3 w-full lg:w-auto">
         {/* Filter Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-            className="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 relative"
+            className="flex items-center gap-1 lg:gap-2 px-3 lg:px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-full text-xs lg:text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 relative"
           >
             <span className="material-symbols-outlined text-[18px]">tune</span>
-            Filter
+            <span className="hidden sm:inline">Filter</span>
             {activeFilterCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-primary text-slate-900 text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
                 {activeFilterCount}
@@ -70,7 +70,7 @@ function Controls({ currentDate, viewMode, onViewModeChange, onDateChange, onTod
           </button>
 
           {showFilterDropdown && (
-            <div className="absolute top-full left-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 min-w-[280px]">
+            <div className="absolute top-full left-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 min-w-[280px] max-w-[calc(100vw-2rem)]">
               <div className="p-4 space-y-4">
                 {/* Team Leaders */}
                 <div>
@@ -138,7 +138,7 @@ function Controls({ currentDate, viewMode, onViewModeChange, onDateChange, onTod
         <div className="relative">
           <button
             onClick={() => setShowViewDropdown(!showViewDropdown)}
-            className="flex items-center gap-2 px-5 py-2 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-semibold"
+            className="flex items-center gap-1 lg:gap-2 px-3 lg:px-5 py-2 bg-slate-100 dark:bg-slate-800 rounded-full text-xs lg:text-sm font-semibold"
           >
             {viewMode === 'month' && 'Month'}
             {viewMode === 'week' && 'Week'}
@@ -190,29 +190,39 @@ function Controls({ currentDate, viewMode, onViewModeChange, onDateChange, onTod
             </div>
           )}
         </div>
+
+        <div className="flex-1 lg:hidden"></div>
+
+        {/* Mobile Today Button */}
+        <button
+          onClick={onToday}
+          className="lg:hidden px-3 lg:px-5 py-2 text-xs lg:text-sm font-semibold text-primary border border-primary/30 rounded-full hover:bg-primary/10"
+        >
+          Today
+        </button>
       </div>
 
       {/* Center - Date Display */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-center gap-2 lg:gap-4 w-full lg:w-auto">
         <button
           onClick={() => onDateChange('prev')}
-          className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-1 lg:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
-          <span className="material-symbols-outlined">chevron_left</span>
+          <span className="material-symbols-outlined text-[20px]">chevron_left</span>
         </button>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white min-w-[240px] text-center">
+        <h2 className="text-base lg:text-xl font-bold text-slate-900 dark:text-white min-w-[180px] lg:min-w-[240px] text-center">
           {getDateDisplay()}
         </h2>
         <button
           onClick={() => onDateChange('next')}
-          className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-1 lg:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
-          <span className="material-symbols-outlined">chevron_right</span>
+          <span className="material-symbols-outlined text-[20px]">chevron_right</span>
         </button>
       </div>
 
-      {/* Right - Today Button */}
-      <div className="flex items-center gap-6">
+      {/* Right - Today Button (Desktop) */}
+      <div className="hidden lg:flex items-center gap-6">
         <button
           onClick={onToday}
           className="px-5 py-2 text-sm font-semibold text-primary border border-primary/30 rounded-full hover:bg-primary/10"

@@ -39,15 +39,15 @@ function JobCard({ job, onClick, isDragging = false }) {
       }}
     >
       <div
-        className={`flex items-center gap-2 p-1.5 rounded-full shadow-sm hover:shadow-md transition-all ${getStatusClasses(
+        className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-full shadow-sm hover:shadow-md transition-all ${getStatusClasses(
           job.status
         )}`}
       >
         <div
-          className="size-6 rounded-full bg-cover bg-center border border-white flex-shrink-0"
+          className="size-4 sm:size-6 rounded-full bg-cover bg-center border border-white flex-shrink-0"
           style={{ backgroundImage: `url('${job.avatar}')` }}
         />
-        <span className="text-[11px] font-bold truncate pr-2">{job.title}</span>
+        <span className="text-[9px] sm:text-[11px] font-bold truncate pr-1 sm:pr-2">{job.title}</span>
       </div>
     </div>
   );

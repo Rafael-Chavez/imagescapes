@@ -56,14 +56,14 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-0 sm:p-4 z-50" onClick={onClose}>
       <div
-        className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-slate-800 rounded-none sm:rounded-2xl shadow-2xl max-w-2xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Job Details</h2>
+        <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Job Details</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
@@ -73,17 +73,17 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Job Info */}
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-3 sm:gap-4">
             <div
-              className="size-16 rounded-full bg-cover bg-center border-2 border-slate-200 flex-shrink-0"
+              className="size-14 sm:size-16 rounded-full bg-cover bg-center border-2 border-slate-200 flex-shrink-0"
               style={{ backgroundImage: `url('${job.avatar}')` }}
             />
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">{job.title}</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Customer: {job.customer}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">{job.title}</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Customer: {job.customer}</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                 Date: {new Date(job.date).toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
@@ -93,24 +93,24 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
                 {job.time && ` at ${job.time}`}
               </p>
               {job.phone && (
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px]">call</span>
-                  {job.phone}
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] sm:text-[16px]">call</span>
+                  <span className="truncate">{job.phone}</span>
                 </p>
               )}
               {job.address && (
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px]">location_on</span>
-                  {job.address}
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] sm:text-[16px]">location_on</span>
+                  <span className="truncate">{job.address}</span>
                 </p>
               )}
             </div>
           </div>
 
           {/* Contact Information */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Phone Number
               </label>
               <input
@@ -118,24 +118,24 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
                 value={editedJob.phone || ''}
                 onChange={(e) => setEditedJob({ ...editedJob, phone: e.target.value })}
                 placeholder="(555) 123-4567"
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white placeholder-slate-400"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white placeholder-slate-400"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Time
               </label>
               <input
                 type="time"
                 value={editedJob.time || ''}
                 onChange={(e) => setEditedJob({ ...editedJob, time: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Address
             </label>
             <input
@@ -143,13 +143,13 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
               value={editedJob.address || ''}
               onChange={(e) => setEditedJob({ ...editedJob, address: e.target.value })}
               placeholder="123 Main St, City, State ZIP"
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white placeholder-slate-400"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-slate-900 dark:text-white placeholder-slate-400"
             />
           </div>
 
           {/* Job Type */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Job Type
             </label>
             <div className="flex flex-wrap gap-2">
@@ -157,7 +157,7 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
                 <button
                   key={type.value}
                   onClick={() => setEditedJob({ ...editedJob, jobType: type.value })}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
                     editedJob.jobType === type.value
                       ? 'bg-primary text-slate-900 ring-2 ring-offset-2 ring-primary'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -171,7 +171,7 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
 
           {/* Status */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Status
             </label>
             <div className="flex flex-wrap gap-2">
@@ -179,7 +179,7 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
                 <button
                   key={status.value}
                   onClick={() => handleStatusChange(status.value)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
                     editedJob.status === status.value
                       ? status.color + ' ring-2 ring-offset-2 ring-slate-400'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -193,13 +193,13 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
 
           {/* Team Leader */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Team Leader
             </label>
             <div className="relative">
               <button
                 onClick={() => setShowTeamLeaderDropdown(!showTeamLeaderDropdown)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+                className="w-full flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
               >
                 {editedJob.teamLeader ? (
                   <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
 
           {/* Employees */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Assigned Employees
             </label>
 
@@ -283,9 +283,9 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
             <div className="relative">
               <button
                 onClick={() => setShowEmployeeDropdown(!showEmployeeDropdown)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+                className="w-full flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
               >
-                <span className="text-sm text-slate-500">Add employees</span>
+                <span className="text-xs sm:text-sm text-slate-500">Add employees</span>
                 <span className="material-symbols-outlined text-slate-400">expand_more</span>
               </button>
 
@@ -321,23 +321,23 @@ function JobModal({ job, teamLeaders, employees, onClose, onUpdate, onDelete }) 
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between gap-4">
+        <div className="sticky bottom-0 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <button
             onClick={handleDelete}
-            className="px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            className="px-4 py-2 text-xs sm:text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors order-3 sm:order-1"
           >
             Delete Job
           </button>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 order-1 sm:order-2">
             <button
               onClick={onClose}
-              className="px-6 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-6 py-2 text-sm font-semibold bg-primary text-slate-900 rounded-lg hover:opacity-90 transition-all shadow-sm"
+              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 text-xs sm:text-sm font-semibold bg-primary text-slate-900 rounded-lg hover:opacity-90 transition-all shadow-sm"
             >
               Save Changes
             </button>

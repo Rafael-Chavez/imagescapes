@@ -40,18 +40,18 @@ function WeekJobCard({ job, onClick }) {
         if (onClick) onClick();
       }}
     >
-      <div className={`p-2 rounded-lg border-l-4 shadow-sm hover:shadow-md transition-all mb-2 ${getStatusClasses(job.status)}`}>
-        <div className="flex items-center gap-2 mb-1">
+      <div className={`p-1.5 sm:p-2 rounded-lg border-l-4 shadow-sm hover:shadow-md transition-all mb-1.5 sm:mb-2 ${getStatusClasses(job.status)}`}>
+        <div className="flex items-center gap-1 sm:gap-2 mb-1">
           <div
-            className="size-5 rounded-full bg-cover bg-center flex-shrink-0 border border-white"
+            className="size-4 sm:size-5 rounded-full bg-cover bg-center flex-shrink-0 border border-white"
             style={{ backgroundImage: `url('${job.avatar}')` }}
           />
-          <span className="text-xs font-bold truncate">{job.title}</span>
+          <span className="text-[10px] sm:text-xs font-bold truncate">{job.title}</span>
         </div>
         {job.teamLeader && (
           <div className="flex items-center gap-1 mt-1">
-            <span className="material-symbols-outlined text-[12px] text-slate-500">person</span>
-            <span className="text-[10px] text-slate-600 dark:text-slate-400">{job.teamLeader.name}</span>
+            <span className="material-symbols-outlined text-[10px] sm:text-[12px] text-slate-500">person</span>
+            <span className="text-[9px] sm:text-[10px] text-slate-600 dark:text-slate-400 truncate">{job.teamLeader.name}</span>
           </div>
         )}
       </div>
@@ -66,23 +66,27 @@ function WeekDayColumn({ date, jobs, onJobClick }) {
   });
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayNamesShort = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const today = new Date();
   const isToday = date.toDateString() === today.toDateString();
 
   return (
     <div
       ref={setNodeRef}
-      className={`flex-1 border-r border-slate-200 dark:border-slate-700 last:border-r-0 min-h-[600px] transition-colors ${
+      className={`flex-1 border-r border-slate-200 dark:border-slate-700 last:border-r-0 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] transition-colors ${
         isOver ? 'bg-primary/10' : ''
       } ${isToday ? 'bg-primary/5' : ''}`}
     >
-      <div className={`p-3 border-b border-slate-200 dark:border-slate-700 text-center ${isToday ? 'bg-primary/10' : 'bg-slate-50 dark:bg-slate-800/50'}`}>
-        <div className="text-xs font-bold uppercase tracking-wider text-slate-500">{dayNames[date.getDay()]}</div>
-        <div className={`text-lg font-bold mt-1 ${isToday ? 'text-primary' : 'text-slate-900 dark:text-white'}`}>
+      <div className={`p-1 sm:p-2 lg:p-3 border-b border-slate-200 dark:border-slate-700 text-center ${isToday ? 'bg-primary/10' : 'bg-slate-50 dark:bg-slate-800/50'}`}>
+        <div className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
+          <span className="sm:hidden">{dayNamesShort[date.getDay()]}</span>
+          <span className="hidden sm:inline">{dayNames[date.getDay()]}</span>
+        </div>
+        <div className={`text-sm sm:text-base lg:text-lg font-bold mt-0.5 sm:mt-1 ${isToday ? 'text-primary' : 'text-slate-900 dark:text-white'}`}>
           {date.getDate()}
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-1 sm:p-2">
         {jobs.map(job => (
           <WeekJobCard key={job.id} job={job} onClick={() => onJobClick(job)} />
         ))}
@@ -147,15 +151,15 @@ function WeekView({ currentDate, jobs, onJobMove, onJobClick }) {
 
   return (
     <main className="flex-1 bg-white dark:bg-background-dark overflow-auto">
-      <div className="w-full max-w-[1600px] mx-auto p-8">
-        <div className="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm">
+      <div className="w-full max-w-[1600px] mx-auto p-2 sm:p-4 lg:p-8">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-2xl overflow-hidden shadow-sm">
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onDragCancel={handleDragCancel}
           >
-            <div className="flex">
+            <div className="flex overflow-x-auto">
               {weekDays.map(day => (
                 <WeekDayColumn
                   key={day.toISOString()}

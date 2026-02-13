@@ -124,17 +124,17 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
 
   return (
     <main className="flex-1 bg-white dark:bg-background-dark overflow-auto">
-      <div className="w-full max-w-[1600px] mx-auto p-8">
-        <div className="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm">
+      <div className="w-full max-w-[1600px] mx-auto p-2 sm:p-4 lg:p-8">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-2xl overflow-hidden shadow-sm">
           {/* Day Names */}
           <div className="grid grid-cols-7 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Mon</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Tue</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Wed</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Thu</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Fri</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Sat</div>
-            <div className="py-3 px-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500">Sun</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">M</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">T</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">W</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">T</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">F</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">S</div>
+            <div className="py-2 px-1 sm:py-3 sm:px-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">S</div>
           </div>
 
           <DndContext
@@ -158,26 +158,26 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
         </div>
 
         {/* Calendar Legend */}
-        <div className="flex flex-wrap items-center gap-6 mt-8 px-2">
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-status-scheduled"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Scheduled</span>
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-4 sm:mt-8 px-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="size-2.5 sm:size-3 rounded-full bg-status-scheduled"></div>
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Scheduled</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-primary/30"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Confirmed</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="size-2.5 sm:size-3 rounded-full bg-primary/30"></div>
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Confirmed</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-status-inprogress"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">In Progress</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="size-2.5 sm:size-3 rounded-full bg-status-inprogress"></div>
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">In Progress</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-status-completed"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Completed</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="size-2.5 sm:size-3 rounded-full bg-status-completed"></div>
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Completed</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-status-urgent"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Urgent</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="size-2.5 sm:size-3 rounded-full bg-status-urgent"></div>
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Urgent</span>
           </div>
         </div>
       </div>
