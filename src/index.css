@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white;
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(140px, auto);
+}
+
+.calendar-cell {
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-cell:nth-child(7n) {
+  border-right: none;
+}
+
+.dark .calendar-cell {
+  border-right-color: #374151;
+  border-bottom-color: #374151;
+}
