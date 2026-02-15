@@ -1,7 +1,50 @@
-import { DndContext, DragOverlay, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
+import { DndContext, DragOverlay, useSensor, useSensors, PointerSensor, useDroppable } from '@dnd-kit/core';
 import { useState } from 'react';
 import CalendarCell from './CalendarCell';
 import JobCard from './JobCard';
+
+// Mobile Calendar Cell Component
+function MobileCalendarCell({ date, day, isToday, isSelected, dayJobs, onDateClick, onJobClick, getStatusColor }) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `mobile-cell-${date.getTime()}`,
+    data: { date }
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      onClick={() => onDateClick(date)}
+      className={`bg-white dark:bg-slate-900 p-1 flex flex-col items-start min-h-[70px] cursor-pointer transition-colors ${
+        isSelected ? 'bg-primary/10 dark:bg-primary/20' : ''
+      } ${isOver ? 'bg-primary/5 ring-1 ring-primary ring-inset' : ''} ${
+        isToday ? 'ring-2 ring-primary ring-inset ring-offset-1 ring-offset-white dark:ring-offset-slate-900' : ''
+      }`}
+    >
+      <div className="flex items-center justify-between w-full mb-1">
+        <span className={`text-xs font-medium ${isToday ? 'text-primary font-bold' : ''}`}>{day}</span>
+        {dayJobs.length > 0 && (
+          <div className="flex gap-0.5">
+            {dayJobs.slice(0, 2).map((job, idx) => (
+              <div key={idx} className={`w-1 h-1 rounded-full ${getStatusColor(job.status)}`}></div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="space-y-0.5 w-full" onClick={(e) => e.stopPropagation()}>
+        {dayJobs.slice(0, 2).map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+            onClick={() => onJobClick(job)}
+          />
+        ))}
+        {dayJobs.length > 2 && (
+          <div className="text-[8px] text-slate-400 text-center font-bold">+{dayJobs.length - 2}</div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
   const [activeJob, setActiveJob] = useState(null);
@@ -165,15 +208,13 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
     const prevMonthDays = prevMonth.getDate();
     for (let i = startingDayOfWeek - 1; i >= 0; i--) {
       const day = prevMonthDays - i;
-      const date = new Date(year, month - 1, day);
       days.push(
-        <button
+        <div
           key={`prev-${day}`}
-          onClick={() => handleDateClick(date)}
-          className="bg-white dark:bg-slate-900 p-1 flex flex-col items-center justify-between min-h-[50px]"
+          className="bg-white dark:bg-slate-900 p-1 flex flex-col items-start min-h-[70px]"
         >
-          <span className="text-xs text-slate-300 dark:text-slate-600">{day}</span>
-        </button>
+          <span className="text-xs text-slate-300 dark:text-slate-600 mb-1">{day}</span>
+        </div>
       );
     }
 
@@ -185,22 +226,17 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
       const dayJobs = getJobsForDate(date);
 
       days.push(
-        <button
+        <MobileCalendarCell
           key={`current-${day}`}
-          onClick={() => handleDateClick(date)}
-          className={`bg-white dark:bg-slate-900 p-1 flex flex-col items-center justify-between min-h-[50px] ${
-            isSelected ? 'bg-primary/10 dark:bg-primary/20' : ''
-          } ${isToday ? 'ring-2 ring-primary ring-inset ring-offset-1 ring-offset-white dark:ring-offset-slate-900' : ''}`}
-        >
-          <span className={`text-xs font-medium ${isToday ? 'text-primary font-bold' : ''}`}>{day}</span>
-          {dayJobs.length > 0 && (
-            <div className="flex flex-wrap gap-0.5 justify-center">
-              {dayJobs.slice(0, 3).map((job, idx) => (
-                <div key={idx} className={`w-1.5 h-1.5 rounded-full ${getStatusColor(job.status)}`}></div>
-              ))}
-            </div>
-          )}
-        </button>
+          date={date}
+          day={day}
+          isToday={isToday}
+          isSelected={isSelected}
+          dayJobs={dayJobs}
+          onDateClick={handleDateClick}
+          onJobClick={onJobClick}
+          getStatusColor={getStatusColor}
+        />
       );
     }
 
@@ -208,15 +244,13 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
     const remainingDays = 7 - (days.length % 7);
     if (remainingDays < 7) {
       for (let day = 1; day <= remainingDays; day++) {
-        const date = new Date(year, month + 1, day);
         days.push(
-          <button
+          <div
             key={`next-${day}`}
-            onClick={() => handleDateClick(date)}
-            className="bg-white dark:bg-slate-900 p-1 flex flex-col items-center justify-between min-h-[50px]"
+            className="bg-white dark:bg-slate-900 p-1 flex flex-col items-start min-h-[70px]"
           >
-            <span className="text-xs text-slate-300 dark:text-slate-600">{day}</span>
-          </button>
+            <span className="text-xs text-slate-300 dark:text-slate-600 mb-1">{day}</span>
+          </div>
         );
       }
     }
@@ -303,9 +337,24 @@ function Calendar({ currentDate, jobs, onJobMove, onJobClick }) {
           </div>
 
           {/* Grid Body */}
-          <div className="grid grid-cols-7 gap-px bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 flex-1">
-            {renderMobileCalendar()}
-          </div>
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onDragCancel={handleDragCancel}
+          >
+            <div className="grid grid-cols-7 gap-px bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 flex-1">
+              {renderMobileCalendar()}
+            </div>
+
+            <DragOverlay>
+              {activeJob ? (
+                <div className="cursor-grabbing opacity-80">
+                  <JobCard job={activeJob} isDragging={true} />
+                </div>
+              ) : null}
+            </DragOverlay>
+          </DndContext>
         </div>
 
         {/* Legend */}
